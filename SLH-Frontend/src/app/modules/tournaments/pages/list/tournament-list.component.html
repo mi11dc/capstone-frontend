@@ -1,0 +1,147 @@
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-12" *ngIf="isDataLoaded">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="card-title my-0"> List of Tournaments </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="toolbar">
+                        <!--        Here you can write extra buttons/actions for the toolbar              -->
+                        <div class="row mb-3">
+                            <div class="col-lg-6 col-md-6 col-sm-4">
+                                <div class="row">
+                                    <div class="col-lg-2 align-self-center">
+                                        <span>Show</span>
+                                    </div>
+                                    <div class="col-lg-4 align-self-center">
+                                        <ng-select
+                                                [items]="rows"
+                                                bindLabel="name"
+                                                placeholder="Select Row"
+                                                (change)="onRowsChange($event)"
+                                                [(ngModel)]="selrow"
+                                                [clearable]="false"
+                                        ></ng-select>
+                                    </div>
+                                    <div class="col-lg-6  align-self-center">
+                                        <span>entries</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-4">
+                                <div class="row">
+                                    <div class="col-lg-3 align-self-center text-right">
+                                        <span class="label-control">Search:</span>
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <div class="input-group mb-0">
+                                            <input type="search" [(ngModel)]="filterQuery"
+                                                   class="form-control" placeholder="Search"
+                                                   style="display:inline-block;"
+                                                   (keyup.enter)="searchSports()">
+                                            <div class="input-group-append" id="button-addon4">
+                                                <button class="btn btn-primary btn-outline-secondary search-button m-0"
+                                                        (click)="searchSports()" title="Search">
+                                                    <i class="nc-icon nc-zoom-split"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-lg-1 col-md-1 col-sm-2">
+                                <a class="btn btn-primary btn-outline-secondary" [routerLink]="['/tournaments/add']" title="Add Tournament">
+                                    <i class="nc-icon nc-simple-add"></i>
+                                </a>
+                            </div> -->
+                        </div>
+                        <div class="table-responsive table ">
+                            <table class="table table-striped table-bordered">
+                                <thead class=" text-primary">
+                                    <th>
+                                        Id
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Organizer Name
+                                    </th>
+                                    <th>
+                                        Actions
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let tournament of lstTournaments">
+                                        <td>
+                                            {{ tournament.id }}
+                                        </td>
+                                        <td>
+                                            {{ tournament.name }}
+                                        </td>
+                                        <td>
+                                            {{ tournament.organizerName }}
+                                        </td>
+                                        <td>
+                                            <button class="custom-pointer btn btn-sm btn-error mx-1 custom-pointer" (click)="deleteTournament(tournament.id)">
+                                                <i class="nc-icon nc-simple-remove"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-7">
+                                <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite" *ngIf="lstTournaments.length > 0">
+                                    Showing {{ tabledata?.from }} to {{ tabledata?.to }} of {{ tabledata?.total }} entries
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-5">
+                                <div class="dataTables_paginate paging_full_numbers" id="datatable_paginate" *ngIf="lstTournaments?.length > 0">
+                                    <ul class="pagination float-right">
+                                        <li [ngClass]="!tabledata?.prev_page_url ? 'paginate_button page-item first disabled' : 'paginate_button page-item first'" id="datatable_first" >
+                                            <a aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link" (click)="onPageSetUP('first')">
+                                                First
+                                            </a>
+                                        </li>
+                                        <li [ngClass]="!tabledata?.prev_page_url ? 'paginate_button page-item previous disabled' : 'paginate_button page-item previous'" id="datatable_previous">
+                                            <a aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link" (click)="onPageSetUP('prev')">
+                                                Previous
+                                            </a>
+                                        </li>
+                                        <li class="paginate_button page-item active">
+                                            <a aria-controls="datatable" data-dt-idx="2" tabindex="0" class="page-link">
+                                                {{ tabledata?.current_page }}
+                                            </a>
+                                        </li>
+                                        <li [ngClass]="!tabledata?.next_page_url ? 'paginate_button page-item next disabled' : 'paginate_button page-item next'" id="datatable_next">
+                                            <a aria-controls="datatable" data-dt-idx="4" tabindex="0" class="page-link" (click)="onPageSetUP('next')">
+                                                Next
+                                            </a>
+                                        </li>
+                                        <li [ngClass]="!tabledata?.next_page_url ? 'paginate_button page-item last disabled' : 'paginate_button page-item last'" id="datatable_last">
+                                            <a aria-controls="datatable" data-dt-idx="5" tabindex="0" class="page-link" (click)="onPageSetUP('last')">
+                                                Last
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

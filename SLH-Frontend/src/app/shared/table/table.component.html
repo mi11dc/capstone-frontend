@@ -1,0 +1,81 @@
+<!-- <table class="table table-striped table-bordered" [mfData]="list" #mf="mfDataTable" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder" [mfRowsOnPage]="rowsOnPage">
+    <thead>
+    <tr>
+        <ng-container *ngFor="let header of headerList">
+            <th *ngIf="header.isSort">
+                <mfDefaultSorter [by]="header.key">
+                    {{ header.text }}
+                </mfDefaultSorter>
+            </th>
+            <th *ngIf="!header.isSort">
+                {{ header.text }}
+            </th>
+        </ng-container>
+        <th *ngIf="actions.length > 0">
+            Actions
+        </th>
+    </tr>
+    </thead>
+    <tbody *ngIf="list?.length > 0">
+    <tr *ngFor="let row of mf.data; let i = index">
+        <ng-container *ngFor="let header of headerList">
+            <td>
+                {{ row[header.key] }}
+            </td>
+        </ng-container>
+
+        <td *ngIf="actions.length > 0">
+            <ng-container *ngFor="let act of actions; let i = index">
+                <a [attr.title]="act.title" [ngClass]="act.class" (click)="onActionClick(act.key, row)">
+                    <i [ngClass]="act.icon"></i>
+                </a>
+            </ng-container>
+        </td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="list?.length === 0">
+    <tr>
+        <td [attr.colspan]="(headerList.length) + (actions.length > 0 ? 1 : 0)" class="text-center">
+            No videos available
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-sm-12 col-md-7">
+        <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite" *ngIf="list?.length > 0">
+            Showing {{ fIndex }} to {{ lIndex }} of {{ totalNo }} entries
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-5">
+        <div class="dataTables_paginate paging_full_numbers" id="datatable_paginate" *ngIf="list?.length > 0">
+            <ul class="pagination float-right">
+                <li [ngClass]="prePage === null ? 'paginate_button page-item first disabled' : 'paginate_button page-item first'" id="datatable_first" >
+                    <a aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link" (click)="onPageSetUP('first')">
+                        First
+                    </a>
+                </li>
+                <li [ngClass]="prePage === null ? 'paginate_button page-item previous disabled' : 'paginate_button page-item previous'" id="datatable_previous">
+                    <a aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link" (click)="onPageSetUP('prev')">
+                        Previous
+                    </a>
+                </li>
+                <li class="paginate_button page-item active">
+                    <a aria-controls="datatable" data-dt-idx="2" tabindex="0" class="page-link">
+                        {{ curPage }}
+                    </a>
+                </li>
+                <li [ngClass]="nxtPage === null ? 'paginate_button page-item next disabled' : 'paginate_button page-item next'" id="datatable_next">
+                    <a aria-controls="datatable" data-dt-idx="4" tabindex="0" class="page-link" (click)="onPageSetUP('next')">
+                        Next
+                    </a>
+                </li>
+                <li [ngClass]="nxtPage === null ? 'paginate_button page-item last disabled' : 'paginate_button page-item last'" id="datatable_last">
+                    <a aria-controls="datatable" data-dt-idx="5" tabindex="0" class="page-link" (click)="onPageSetUP('last')">
+                        Last
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div> -->

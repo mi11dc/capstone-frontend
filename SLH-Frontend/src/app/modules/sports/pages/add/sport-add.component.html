@@ -1,0 +1,40 @@
+<div class="main-content" *ngIf="isDataLoaded">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="my-0">Create Create</h4>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <form [formGroup]="sportForm">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6 form-group">
+                                    <label>Name<span class="star">*</span> :</label>
+                                    <input class="form-control" placeholder="Name" formControlName="name">
+                                    <small *ngIf="submitted && f.name.errors"
+                                           class="text-danger">
+                                        <span *ngIf="f.name.errors.required">Name is required.</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-primary float-right mx-3" (click)="onSubmit()">Submit</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

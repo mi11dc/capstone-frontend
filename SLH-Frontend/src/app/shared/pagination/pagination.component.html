@@ -1,0 +1,19 @@
+<!-- <div class="pagination" *ngIf="!do_not_load">
+  <ul *ngIf="automatic; else manual;">
+    <li *ngIf="current_page -1  > 0"><a  (click)="page(current_page-1)">Previous</a></li>
+    <li *ngIf="current_page -2  > 0" ><a  (click)="page(current_page-2)">{{current_page-2}}</a> </li>
+    <li *ngIf="current_page -1  > 0" ><a  (click)="page(current_page-1)">{{current_page-1}}</a> </li>
+    <li> <a  disabled="disabled" class="active" (click)="page(current_page)">{{current_page}}</a></li>
+    <li *ngIf="current_page +1  <= total_pages" ><a  (click)="page(current_page +1)">{{current_page+1}}</a> </li>
+    <li *ngIf="current_page +2  < total_pages" ><a  (click)="page(current_page +2)">{{current_page+2}}</a> </li>
+    <li *ngIf="current_page +1  <= total_pages"><a (click)="page(current_page +1)">Next </a></li>
+    <li><a title="Switch to manual mode" (click)="automatic = false">Switch to manual</a></li>
+  </ul>
+  <ng-template #manual>
+    <ul>
+      <li><a title="total pages: {{total_pages}}" style="padding: 7px;"><input [(ngModel)]="customPage" type="number" placeholder="Page Number" min="2" style="border: none;"></a></li>
+      <li><a (click)="page(customPage)">Go</a></li>
+      <li><a title="Switch to automatic mode" (click)="automatic = true">Switch to automatic</a></li>
+    </ul>
+  </ng-template>
+</div> -->
