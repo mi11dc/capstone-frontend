@@ -6,7 +6,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 export const AppRoutes: Routes = [
     {
         path:'',
-        redirectTo: 'dashboard',
+        redirectTo: 'sports',
         pathMatch: 'full'
     },
     {

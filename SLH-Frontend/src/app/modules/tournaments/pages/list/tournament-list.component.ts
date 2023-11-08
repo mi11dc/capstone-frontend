@@ -5,6 +5,7 @@ import { TableTournamentData } from "../../_core/model/model";
 import { TournamentService } from "../../tournament.service";
 import { ToastrService } from "ngx-toastr";
 import Swal from 'sweetalert2';
+import { UtilityService } from "app/core/services/utility.service";
 
 @Component({
     selector: 'tournament-list',
@@ -30,6 +31,9 @@ export class TournamentListComponent implements OnInit {
     page = 1;
     perPage = 5
     totalCount;
+
+    currUserId = UtilityService.getLocalStorage('id');
+    currUserRole = UtilityService.getLocalStorage('role');
 
     constructor(
         private router: Router,
@@ -60,7 +64,7 @@ export class TournamentListComponent implements OnInit {
         }, error => {
             this.toast.error(error.message);
             if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+                this.router.navigate(['/auth/login']);
             }
         });
     }
@@ -158,10 +162,12 @@ export class TournamentListComponent implements OnInit {
 
     getObject() {
         let obj = {};
+        let organizerId = (this.currUserRole.toString() === '1') ? 0 : parseInt(this.currUserId);
         Object.assign(obj, {
             SearchStr: this.filterQuery,
             PageNo: this.page,
-            PageSize: this.perPage
+            PageSize: this.perPage,
+            OrganizerId: organizerId
         });
         return obj;
     }
@@ -198,7 +204,7 @@ export class TournamentListComponent implements OnInit {
             this.getTournaments();
         }, error => {
             if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+                this.router.navigate(['/auth/login']);
             }
         });
     }

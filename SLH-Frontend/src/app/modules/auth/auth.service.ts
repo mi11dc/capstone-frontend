@@ -22,4 +22,8 @@ export class AuthService {
     getAllRoles(request: any) {
         return this.api.post(config.partialUrls.getAllRoles, request);
     }
+
+    getAllSports(request: any) {
+        return this.api.post(config.partialUrls.getAllSportsForRegister, request);
+    }
 }

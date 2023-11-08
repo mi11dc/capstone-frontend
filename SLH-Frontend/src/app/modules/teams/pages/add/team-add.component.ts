@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TeamService } from "../../team.service";
 import { Router } from "@angular/router";
 import { UtilityService } from "app/core/services/utility.service";
@@ -15,10 +15,12 @@ export class TeamAddComponent implements OnInit {
     teamForm: FormGroup;
     isDataLoaded = false;
     submitted = false;
-    userRole;
 
     ownerList: Dropdowndata[];
     sportList: Dropdowndata[];
+
+    currUserId = UtilityService.getLocalStorage('id');
+    currUserRole = UtilityService.getLocalStorage('role');
 
     constructor(
         private fb: FormBuilder,
@@ -32,24 +34,24 @@ export class TeamAddComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.getSports();
+        this.setDefaultData();
     }
 
     setDefaultData() {
         this.teamForm = this.fb.group({
-            name: [ null ],
-            country: [ null ],
+            name: [ null, [ Validators.required ] ],
+            country: [ null, [ Validators.required ] ],
             owner: [ null ],
             sport: [ null ]
         });
-        this.userRole = UtilityService.getLocalStorage('role');
 
-        this.isDataLoaded = true;
+        this.getSports();
+
     }
 
     getSports() {
-        let request = {};
-        this.team.getSports(request).subscribe((response) => {
+        const queryParams = this.getObject();
+        this.team.getSports(queryParams).subscribe((response) => {
             let data = response.body.item;
             this.sportList = [];
             for (let i in data) {
@@ -58,9 +60,19 @@ export class TeamAddComponent implements OnInit {
                     this.f.sport.setValue(data[i].id);
                 }
             }
-            this.getOwners();
-        }, error => {
-            this.toast.error(error.message, 'Error');
+            if (this.currUserRole && this.currUserRole === '1') {
+                this.getOwners();
+            }
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
+            }
         });
     }
 
@@ -74,16 +86,20 @@ export class TeamAddComponent implements OnInit {
             for (let i in data) {
                 this.ownerList.push({
                     id: data[i].id,
-                    name: (data[i].firstName) ? (data[i].firstName + ' ' + data[i].lastName) : data[i].username
+                    name: (data[i].firstName) ? ((data[i].lastName) ? (data[i].firstName + ' ' + data[i].lastName) : data[i].firstName) : data[i].username
                 });
                 if (i == "0") {
-                    this.f.sport.setValue(data[i].id);
+                    this.f.owner.setValue(data[i].id);
                 }
             }
-            this.setDefaultData();
+            this.isDataLoaded = true;
         }, error => {
             this.toast.error(error.message, 'Error');
         });
+    }
+
+    onBackButton() {
+        this.router.navigate(['/teams']);
     }
 
     onSubmit() {
@@ -95,15 +111,34 @@ export class TeamAddComponent implements OnInit {
         const obj = {
             name: this.f.name.value,
             sportId: this.f.sport.value,
-            ownerId: (this.userRole && this.userRole === 1) ? this.f.owner.value : 0,
+            ownerId: (this.currUserRole && this.currUserRole === '1') ? this.f.owner.value : 0,
             country: this.f.country.value
         };
-        // this.team.teamCreate(obj).subscribe(res => {
-        //     this.router.navigate(['/teams']);
-        // }, error => {
-        //     if (error.status === 401) {
-        //         this.router.navigate(['auth/login']);
-        //     }
-        // });
+        this.team.teamCreate(obj).subscribe(res => {
+            this.router.navigate(['/teams']);
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
+            }
+        });
+    }
+
+    getObject() {
+        let obj = {};
+        let userId = (this.currUserRole.toString() === '1') ? 0 : parseInt(this.currUserId);
+        Object.assign(obj, {
+            SearchStr: '',
+            PageNo: 0,
+            PageSize: 0,
+            UserId: userId,
+            IsDropDown: true,
+        });
+        return obj;
     }
 }

@@ -12,60 +12,53 @@ export const Constants = {
     ROUTES: [
         {
             id: 1,
-            path: '/dashboard',
-            title: 'Dashboard',
+            path: '/sports',
+            title: 'Sports',
             type: 'link',
-            icontype: 'nc-icon nc-bank'
-        }, {
+            icontype: 'nc-icon nc-bank',
+            roles: [ 1 ]
+        }, 
+        {
             id: 2,
-            path: '/users',
-            title: 'Users',
+            path: '/venues',
+            title: 'Venues',
             type: 'link',
-            icontype: 'nc-icon nc-single-02'
-        }, {
+            icontype: 'nc-icon nc-single-02',
+            roles: [ 1 ]
+        }, 
+        {
             id: 3,
-            path: '/posts',
-            title: 'Posts',
+            path: '/teams',
+            title: 'Teams',
             type: 'link',
-            icontype: 'nc-icon nc-paper'
-        }, {
+            collapse: 'teams',
+            icontype: 'nc-icon nc-paper',
+            roles: [ 1, 3 ],
+            // children: [
+            //     { path: '/teams', title: 'Teams', ab:'TL' },
+            //     { path: '/teams/addPlayer', title: 'Add Player to Team', ab:'AP' }
+            // ]
+        }, 
+        {
             id: 4,
-            path: '/staff',
-            title: 'Staff management',
-            type: 'sub',
+            path: '/tournaments',
+            title: 'Tournaments',
+            type: 'link',
             collapse: 'staff',
             icontype: 'nc-icon nc-laptop',
-            children: [
-                { path: 'list', title: 'View members', ab:'V' },
-                { path: 'create', title: 'Create member', ab:'C' }
-            ]
-        }, {
+            roles: [ 1, 2 ],
+            // children: [
+            //     { path: '', title: 'Tournaments', ab:'TL' },
+            //     { path: 'addTeams', title: 'Add Teams to Tournament', ab:'AT' },
+            // ]
+        }, 
+        {
             id: 5,
-            path: '/tickets',
-            title: 'Tickets',
+            path: '/matches',
+            title: 'Matches',
             type: 'link',
-            icontype: 'nc-icon nc-email-85'
-        }, {
-            id: 6,
-            path: '/reports',
-            title: 'Reports',
-            type: 'link',
-            icontype: 'nc-icon nc-chart-pie-36'
-        }, {
-            id: 7,
-            path: '/settings',
-            title: 'Settings',
-            type: 'sub',
-            collapse: 'settings',
-            icontype: 'nc-icon nc-settings-gear-65',
-            children: [
-                { path: 'chat-categories', title: 'Chat categories', ab: 'CC' },
-                { path: 'abusive-words', title: 'Abusive words', ab:'AW' },
-                { path: 'expression-icons', title: 'Expression Icons', ab:'EI' },
-                { path: 'cl-post', title: 'CL Post', ab:'CP' },
-                { path: 'plan-amount', title: 'Plan Amount', ab:'PA' },
-                { path: 'faq', title: 'FAQ', ab:'FAQ' }
-            ]
+            icontype: 'nc-icon nc-email-85',
+            roles: [ 1, 2, 3 ]
         }
     ]
     // ,

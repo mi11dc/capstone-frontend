@@ -62,7 +62,7 @@ export class MatchListComponent implements OnInit {
         }, error => {
             this.toast.error(error.message);
             if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+                this.router.navigate(['/auth/login']);
             }
         });
     }
@@ -201,7 +201,7 @@ export class MatchListComponent implements OnInit {
             this.getMatches();
         }, error => {
             if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+                this.router.navigate(['/auth/login']);
             }
         });
     }

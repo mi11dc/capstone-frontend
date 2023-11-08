@@ -9,13 +9,15 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { TeamService } from "./team.service";
+import { AddPlayerComponent } from "./pages/addPlayer/addPlayer.component";
 
 @NgModule({
     declarations: [
         TeamAddComponent,
         TeamEditComponent,
         TeamListComponent,
-        TeamDetailComponent
+        TeamDetailComponent,
+        AddPlayerComponent
     ],
     imports: [
         CommonModule,

@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { TeamService } from "../../team.service";
 import Swal from 'sweetalert2';
+import { UtilityService } from "app/core/services/utility.service";
 
 @Component({
     selector: 'team-list',
@@ -31,6 +32,9 @@ export class TeamListComponent implements OnInit {
     page = 1;
     perPage = 5
     totalCount;
+
+    currUserId = UtilityService.getLocalStorage('id');
+    currUserRole = UtilityService.getLocalStorage('role');
 
     constructor(
         private router: Router,
@@ -59,10 +63,15 @@ export class TeamListComponent implements OnInit {
         const queryParams = this.getObject();
         this.team.getTeams(queryParams).subscribe(res => {
             this.setTeams(res.body.item)
-        }, error => {
-            this.toast.error(error.message);
-            if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
             }
         });
     }
@@ -70,15 +79,16 @@ export class TeamListComponent implements OnInit {
     setTeams(data) {
         this.lstTeams = [];
         data.forEach((obj, i) => {
-            // if (i === 0) {
-            //     this.totalCount = obj.totalCount ;
-            // } 
+            if (i === 0) {
+                this.totalCount = obj.totalCount;
+            } 
             this.lstTeams.push({
                 id: obj.id,
                 name: obj.name,
                 country: obj.country,
                 ownerId: obj.ownerId,
-                ownerName: obj.ownerName,
+                ownerFName: obj.ownerFName,
+                ownerLName: obj.ownerLName,
                 sportId: obj.sportId,
                 sportName: obj.sportName,
             });
@@ -98,8 +108,11 @@ export class TeamListComponent implements OnInit {
         this.getTeams();
     }
 
-    onSportDetails(userId) {
-        this.router.navigate([`/sport/${userId}/detail`]);
+    onTeamDetails(teamId) {
+        this.router.navigate([`/teams/${teamId}/detail`]);
+    }
+    onTeamEdit(teamId) {
+        this.router.navigate([`/teams/${teamId}/edit`]);
     }
 
     onPageSetUP(type) {
@@ -157,10 +170,13 @@ export class TeamListComponent implements OnInit {
 
     getObject() {
         let obj = {};
+        let ownerId = (this.currUserRole.toString() === '1') ? 0 : parseInt(this.currUserId);
         Object.assign(obj, {
             SearchStr: this.filterQuery,
             PageNo: this.page,
-            PageSize: this.perPage
+            PageSize: this.perPage,
+            OwnerId: ownerId,
+            IsDropDown: false
         });
         return obj;
     }
@@ -195,9 +211,15 @@ export class TeamListComponent implements OnInit {
     teamDelete(request) {
         this.team.teamDelete(request).subscribe(res => {
             this.getTeams();
-        }, error => {
-            if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
             }
         });
     }

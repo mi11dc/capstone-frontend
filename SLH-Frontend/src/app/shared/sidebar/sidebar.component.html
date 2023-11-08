@@ -3,11 +3,12 @@
 	<a href="https://www.creative-tim.com" class="simple-text logo-mini">
         <div class="logo-image-small">
             <!-- <img src="./assets/img/angular2-logo-white.png"/> -->
+            <img src="./assets/img/bg/bg2.jpg" alt="Card image cap" class="card-img-top" style="width: 1.3em;">
         </div>
 	</a>
 
 	<a href="https://www.creative-tim.com" class="simple-text logo-normal" style="text-transform: none;">
-		ConsciaLink
+		Sports Hub League
 	</a>
 </div>
 
@@ -62,7 +63,7 @@
             <div id="{{menuitem.collapse}}" class="collapse" *ngIf="menuitem.type === 'sub'">
                 <ul class="nav">
                     <li routerLinkActive="active" *ngFor="let childitem of menuitem.children">
-                        <a [routerLink]="[menuitem.path, childitem.path]">
+                        <a [routerLink]="[childitem.path]">
                             <span class="sidebar-mini-icon">{{ childitem.ab }}</span>
                             <span class="sidebar-normal">{{ childitem.title }}</span>
                         </a>

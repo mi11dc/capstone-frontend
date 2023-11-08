@@ -57,10 +57,15 @@ export class VenueListComponent implements OnInit {
         const queryParams = this.getObject();
         this.venue.getVenues(queryParams).subscribe(res => {
             this.setVenues(res.body.item)
-        }, error => {
-            this.toast.error(error.message);
-            if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
             }
         });
     }
@@ -68,9 +73,9 @@ export class VenueListComponent implements OnInit {
     setVenues(data) {
         this.lstVenues = [];
         data.forEach((obj, i) => {
-            // if (i === 0) {
-            //     this.totalCount = obj.totalCount ;
-            // } 
+            if (i === 0) {
+                this.totalCount = obj.totalCount ;
+            } 
             this.lstVenues.push({
                 id: obj.id,
                 name: obj.name,
@@ -116,7 +121,7 @@ export class VenueListComponent implements OnInit {
                     (parseInt(this.totalCount.toString(), 10)) / (parseInt(this.perPage.toString(), 10))
                 );
                 last = parseInt(last.toString(), 10);
-                this.page = last;
+                this.page = last + 1;
                 this.getVenues();
                 break;
             default:
@@ -130,11 +135,11 @@ export class VenueListComponent implements OnInit {
             from = 1;
             to = this.totalCount > this.perPage ? this.perPage : this.totalCount;
         } else {
-            if (this.totalCount > ((this.perPage * this.page) + this.perPage)) {
-                from = (this.perPage * this.page) + 1;
-                to = (this.perPage * this.page) + this.perPage;
+            if (this.totalCount > ((this.perPage * (this.page - 1)) + this.perPage)) {
+                from = (this.perPage * (this.page - 1)) + 1;
+                to = (this.perPage * (this.page - 1)) + this.perPage;
             } else {
-                from = (this.perPage * this.page) + 1;
+                from = (this.perPage * (this.page - 1)) + 1;
                 to = this.totalCount
             }
         }
@@ -189,10 +194,16 @@ export class VenueListComponent implements OnInit {
 
     venueDelete(request) {
         this.venue.venueDelete(request).subscribe(res => {
-            this.getVenues();
-        }, error => {
-            if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+            this.onPageSetUP('first');
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
             }
         });
     }

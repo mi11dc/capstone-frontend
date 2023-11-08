@@ -1,0 +1,127 @@
+<div class="main-content" *ngIf="isDataLoaded">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="my-0">Team Details</h4>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Team Name :</label>
+                                    <p>{{ teamDetails?.name }}</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                            <label>Owner Name :</label>
+                                            <p>{{ (teamDetails?.ownerLName === null || teamDetails?.ownerLName === '') ?  teamDetails?.ownerFName : (teamDetails?.ownerFName + ' ' + teamDetails?.ownerLName) }}</p>  
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                            <label>Sport :</label>
+                                            <p>{{ teamDetails?.sportName }}</p>  
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                            <label>Country :</label>
+                                            <p>{{ teamDetails?.country }}</p>
+                                        </div>
+                                    </div>                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title my-0"> List of Players </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="toolbar">
+                            <!--        Here you can write extra buttons/actions for the toolbar              -->
+                            <div class="row mb-3">
+                                <div class="col-lg-6 col-md-6 col-sm-4">
+                                    
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-4">
+                                    
+                                </div>
+    
+                                <div class="col-lg-1 col-md-1 col-sm-2">
+                                    <a class="btn btn-primary btn-outline-secondary custom-pointer" (click)="onAddPlayer()"  title="Add Player">
+                                        <i class="nc-icon nc-simple-add"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="table-responsive table ">
+                                <table class="table table-striped table-bordered">
+                                    <thead class=" text-primary">
+                                        <th style="width: 15%;">
+                                            #
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Bio
+                                        </th>
+                                        <th style="width: 15%;">
+                                            Actions
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let player of teamDetails?.lstPlayers; let i = index;">
+                                            <td>
+                                                {{ i + 1 }}
+                                            </td>
+                                            <td>
+                                                {{ (player.lName === null || player.lName === '') ?  player.fName : (player.fName + ' ' + player.fName) }}
+                                            </td>
+                                            <td>
+                                                {{ player.userBio }}
+                                            </td>
+                                            <td>
+                                                <button title="Delete team" class="custom-pointer btn btn-sm btn-danger mx-1 custom-pointer" (click)="onReleasePlayer(player.id)">
+                                                    <i class="nc-icon nc-simple-remove"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center" *ngIf="teamDetails?.lstPlayers?.length === 0">
+                                            <td colspan="3">No players Added</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+    
+                    </div>
+    
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- <div *ngIf="!isDataLoaded">
+    <div class="loader-ring">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div> -->

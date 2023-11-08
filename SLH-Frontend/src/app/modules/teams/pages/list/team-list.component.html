@@ -65,7 +65,7 @@
                         <div class="table-responsive table ">
                             <table class="table table-striped table-bordered">
                                 <thead class=" text-primary">
-                                    <th>
+                                    <th style="width: 15%;">
                                         Id
                                     </th>
                                     <th>
@@ -74,26 +74,35 @@
                                     <th>
                                         Owner Name
                                     </th>
-                                    <th>
+                                    <th style="width: 15%;">
                                         Actions
                                     </th>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let team of lstTeams">
+                                    <tr *ngFor="let team of lstTeams; let i = index;">
                                         <td>
-                                            {{ team.id }}
+                                            {{ i + 1 }}
                                         </td>
                                         <td>
                                             {{ team.name }}
                                         </td>
                                         <td>
-                                            {{ team.ownerName }}
+                                            {{ (team.ownerLName === null || team.ownerLName === '') ?  team.ownerFName : (team.ownerFName + ' ' + team.ownerLName) }}
                                         </td>
                                         <td>
-                                            <button class="custom-pointer btn btn-sm btn-error mx-1 custom-pointer" (click)="deleteTeam(team.id)">
+                                            <button title="View team" class="custom-pointer btn btn-sm btn-primary mx-1 custom-pointer" (click)="onTeamDetails(team.id)">
+                                                <i class="nc-icon nc-paper"></i>
+                                            </button>
+                                            <button title="Edit team" class="custom-pointer btn btn-sm btn-warning mx-1 custom-pointer" (click)="onTeamEdit(team.id)">
+                                                <i class="nc-icon nc-ruler-pencil"></i>
+                                            </button>
+                                            <button title="Delete team" class="custom-pointer btn btn-sm btn-danger mx-1 custom-pointer" (click)="deleteTeam(team.id)">
                                                 <i class="nc-icon nc-simple-remove"></i>
                                             </button>
                                         </td>
+                                    </tr>
+                                    <tr class="text-center" *ngIf="lstTeams.length === 0">
+                                        <td colspan="4">No Team Available</td>
                                     </tr>
                                 </tbody>
                             </table>

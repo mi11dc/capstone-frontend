@@ -57,7 +57,7 @@
                             </div>
 
                             <div class="col-lg-1 col-md-1 col-sm-2">
-                                <a class="btn btn-primary btn-outline-secondary" [routerLink]="['/sports/add']" title="Add Sport">
+                                <a class="btn btn-primary btn-outline-secondary margin-top-0" [routerLink]="['/sports/add']" title="Add Sport">
                                     <i class="nc-icon nc-simple-add"></i>
                                 </a>
                             </div>
@@ -65,29 +65,32 @@
                         <div class="table-responsive table ">
                             <table class="table table-striped table-bordered">
                                 <thead class=" text-primary">
-                                    <th>
-                                        Id
+                                    <th style="width: 15%;">
+                                        #
                                     </th>
                                     <th>
                                         Name
                                     </th>
-                                    <th>
+                                    <th style="width: 15%;">
                                         Actions
                                     </th>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let sport of lstSports">
+                                    <tr *ngFor="let sport of lstSports; let i = index;">
                                         <td>
-                                            {{ sport.id }}
+                                            {{ i + 1 }}
                                         </td>
                                         <td>
                                             {{ sport.name }}
                                         </td>
                                         <td>
-                                            <button class="custom-pointer btn btn-sm btn-error mx-1 custom-pointer" (click)="deleteSport(sport.id)">
+                                            <button class="custom-pointer btn btn-sm btn-danger mx-1 custom-pointer" title="Delete Sport" (click)="deleteSport(sport.id)">
                                                 <i class="nc-icon nc-simple-remove"></i>
                                             </button>
                                         </td>
+                                    </tr>
+                                    <tr class="text-center" *ngIf="lstSports.length === 0">
+                                        <td colspan="3">No sport available</td>
                                     </tr>
                                 </tbody>
                             </table>

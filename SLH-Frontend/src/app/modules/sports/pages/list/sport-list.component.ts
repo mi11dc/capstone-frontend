@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { SportService } from "../../sports.service";
 import { ToastrService } from "ngx-toastr";
 import Swal from 'sweetalert2';
+import { UtilityService } from "app/core/services/utility.service";
 
 @Component({
     selector: 'sport-list',
@@ -32,6 +33,9 @@ export class SportListComponent implements OnInit {
     perPage = 5
     totalCount;
 
+    currUserId = UtilityService.getLocalStorage('id');
+    currUserRole = UtilityService.getLocalStorage('role');
+
     constructor(
         private router: Router,
         private sport: SportService,
@@ -58,10 +62,15 @@ export class SportListComponent implements OnInit {
         const queryParams = this.getObject();
         this.sport.getSports(queryParams).subscribe(res => {
             this.setSports(res.body.item)
-        }, error => {
-            this.toast.error(error.message);
-            if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
             }
         });
     }
@@ -69,14 +78,13 @@ export class SportListComponent implements OnInit {
     setSports(data) {
         this.lstSports = [];
         data.forEach((obj, i) => {
-            // if (i === 0) {
-            //     this.totalCount = obj.totalCount ;
-            // } 
+            if (i === 0) {
+                this.totalCount = obj.totalCount;
+            } 
             this.lstSports.push({
                 id: obj.id,
                 name: obj.name
             });
-            this.totalCount = this.lstSports.length;
         });
         this.setFooter();
         this.isDataLoaded = true;
@@ -115,7 +123,8 @@ export class SportListComponent implements OnInit {
                     (parseInt(this.totalCount.toString(), 10)) / (parseInt(this.perPage.toString(), 10))
                 );
                 last = parseInt(last.toString(), 10);
-                this.page = last;
+                
+                this.page = (this.totalCount % this.perPage === 0) ? last : last + 1;
                 this.getSports();
                 break;
             default:
@@ -129,11 +138,11 @@ export class SportListComponent implements OnInit {
             from = 1;
             to = this.totalCount > this.perPage ? this.perPage : this.totalCount;
         } else {
-            if (this.totalCount > ((this.perPage * this.page) + this.perPage)) {
-                from = (this.perPage * this.page) + 1;
-                to = (this.perPage * this.page) + this.perPage;
+            if (this.totalCount > ((this.perPage * (this.page - 1)) + this.perPage)) {
+                from = (this.perPage * (this.page - 1)) + 1;
+                to = (this.perPage * (this.page - 1)) + this.perPage;
             } else {
-                from = (this.perPage * this.page) + 1;
+                from = (this.perPage * (this.page - 1)) + 1;
                 to = this.totalCount
             }
         }
@@ -154,7 +163,8 @@ export class SportListComponent implements OnInit {
         Object.assign(obj, {
             SearchStr: this.filterQuery,
             PageNo: this.page,
-            PageSize: this.perPage
+            PageSize: this.perPage,
+            IsDropDown: false
         });
         return obj;
     }
@@ -188,10 +198,16 @@ export class SportListComponent implements OnInit {
 
     sportDelete(request) {
         this.sport.sportDelete(request).subscribe(res => {
-            this.getSports();
-        }, error => {
-            if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+            this.onPageSetUP('first');
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
             }
         });
     }

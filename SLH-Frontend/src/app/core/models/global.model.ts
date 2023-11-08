@@ -35,6 +35,7 @@ export interface RouteInfo {
     icontype: string;
     // icon: string;
     children?: ChildrenItems[];
+    roles: number[];
 }
 
 export interface ChildrenItems {

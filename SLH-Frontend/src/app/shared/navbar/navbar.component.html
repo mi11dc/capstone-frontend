@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="navbar-wrapper">
       <div class="navbar-minimize">
-        <button id="minimizeSidebar" class="btn btn-icon btn-round" (click)="minimizeSidebar()">
+        <button id="minimizeSidebar" class="btn btn-icon btn-round btn-danger" (click)="minimizeSidebar()">
           <i class="nc-icon nc-minimal-right text-center visible-on-sidebar-mini"></i>
           <i class="nc-icon nc-minimal-left text-center visible-on-sidebar-regular"></i>
         </button>
@@ -14,7 +14,7 @@
           <span class="navbar-toggler-bar bar3"></span>
         </button>
       </div>
-      <a class="navbar-brand" href="javascript:void(0)">{{getTitle()}}</a>
+      <!-- <a class="navbar-brand" href="javascript:void(0)">{{ getTitle() }}</a> -->
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" (click)="open = !open"
       >
@@ -30,7 +30,7 @@
             <i class="nc-icon nc-settings-gear-65"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" (click)="logout()">Logout</a>
+            <a class="dropdown-item custom-pointer" (click)="logout()">Logout</a>
           </div>
         </li>
       </ul>

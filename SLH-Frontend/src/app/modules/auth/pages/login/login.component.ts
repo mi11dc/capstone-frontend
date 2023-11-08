@@ -93,15 +93,22 @@ export class LoginComponent implements OnInit {
             };
             this.auth.login(request).subscribe((response) => {
                 let data = response.body.item;
+                let name = (data.lastName) ? (data.firstName + ' ' + data.lastName) : data.firstName;
                 UtilityService.setMultiLocalStorage([
-                    ['name', data.firstName + ' ' + data.lastName],
+                    ['name', name],
                     ['token', data.token],
-                    ['id', data.userId],
+                    ['id', data.id],
                     ['rolename', data.userRoleName],
                     ['role', data.userRoleId],
                     ['user', JSON.stringify(data)]
                 ]);
                 this.router.navigate(['/tournaments']);
+            }, e => {
+                if (e && e.error && e.error.message && e.error.message[0]) {
+                    this.toast.error(e.error.message[0]);
+                } else {
+                    this.toast.error(e.message, 'Error');
+                }
             });
         }
     }

@@ -13,40 +13,39 @@
 
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <form [formGroup]="venueForm">
-                            <div class="row">
-                                <div class="col-md-3 col-sm-6 form-group">
-                                    <label>Venue Name<span class="star">*</span> :</label>
-                                    <input class="form-control" placeholder="Venue Name" formControlName="name">
-                                    <small *ngIf="submitted && f.name.errors"
-                                           class="text-danger">
-                                        <span *ngIf="f.name.errors.required">Venue Name is required.</span>
-                                    </small>
-                                </div>
-                                <div class="col-md-3 col-sm-6 form-group">
-                                    <label>Location<span class="star">*</span> :</label>
-                                    <input class="form-control" placeholder="Location" formControlName="location">
-                                    <small *ngIf="submitted && f.location.errors"
-                                           class="text-danger">
-                                        <span *ngIf="f.location.errors.required">Location is required.</span>
-                                    </small>
-                                </div>
-                                <div class="col-md-3 col-sm-6 form-group">
-                                    <label>Country<span class="star">*</span> :</label>
-                                    <input class="form-control" placeholder="Country" formControlName="country">
-                                    <small *ngIf="submitted && f.country.errors"
-                                           class="text-danger">
-                                        <span *ngIf="f.country.errors.required">Country is required.</span>
-                                    </small>
-                                </div>
+                <div class="card-body">
+                    <form [formGroup]="venueForm">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6 form-group">
+                                <label>Venue Name<span class="star">*</span> :</label>
+                                <input class="form-control" placeholder="Venue Name" formControlName="name">
+                                <small *ngIf="submitted && f.name.errors"
+                                       class="text-danger">
+                                    <span *ngIf="f.name.errors.required">Venue Name is required.</span>
+                                </small>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-md-3 col-sm-6 form-group">
+                                <label>Location<span class="star">*</span> :</label>
+                                <input class="form-control" placeholder="Location" formControlName="location">
+                                <small *ngIf="submitted && f.location.errors"
+                                       class="text-danger">
+                                    <span *ngIf="f.location.errors.required">Location is required.</span>
+                                </small>
+                            </div>
+                            <div class="col-md-3 col-sm-6 form-group">
+                                <label>Country<span class="star">*</span> :</label>
+                                <input class="form-control" placeholder="Country" formControlName="country">
+                                <small *ngIf="submitted && f.country.errors"
+                                       class="text-danger">
+                                    <span *ngIf="f.country.errors.required">Country is required.</span>
+                                </small>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div>
-                    <button class="btn btn-primary float-right mx-3" (click)="onSubmit()">Submit</button>
+                    <button class="btn btn-success float-right mx-3 custom-pointer" (click)="onSubmit()">Submit</button>
+                    <button class="btn btn-primary float-right mx-3 custom-pointer" (click)="onBackButton()">Go to List</button>
                 </div>
 
             </div>

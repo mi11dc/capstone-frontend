@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { VenueService } from "../../venue.service";
 import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: 'venue-add',
@@ -17,6 +18,7 @@ export class VenueAddComponent implements OnInit {
         private fb: FormBuilder,
         private router: Router,
         private venue: VenueService,
+        private toast: ToastrService,
     ) { }
     
     get f() {
@@ -29,12 +31,22 @@ export class VenueAddComponent implements OnInit {
 
     setDefaultData() {
         this.venueForm = this.fb.group({
-            name: [ null ],
-            country: [ null ],
-            location: [ null ],
+            name: [ null, [
+                Validators.required
+            ] ],
+            country: [ null, [
+                Validators.required
+            ] ],
+            location: [ null, [
+                Validators.required
+            ] ],
         });
 
         this.isDataLoaded = true;
+    }
+
+    onBackButton() {
+        this.router.navigate(['/venues']);
     }
 
     onSubmit() {
@@ -50,9 +62,15 @@ export class VenueAddComponent implements OnInit {
         };
         this.venue.venueCreate(obj).subscribe(res => {
             this.router.navigate(['/venues']);
-        }, error => {
-            if (error.status === 401) {
-                this.router.navigate(['auth/login']);
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
             }
         });
     }

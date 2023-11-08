@@ -19,6 +19,8 @@ export class SignupComponent implements OnInit {
     focus;
     focus1;
     focus2;
+    focus3;
+    focus4;
     test: Date = new Date();
     private toggleButton;
     private sidebarVisible: boolean;
@@ -27,6 +29,7 @@ export class SignupComponent implements OnInit {
     public submitted = false;
 
     roleList: Dropdowndata[];
+    sportList: Dropdowndata[];
     isPageLoad = false;
     constructor(
         private element: ElementRef,
@@ -51,7 +54,8 @@ export class SignupComponent implements OnInit {
             ] ],
             role: ['', [
                 Validators.required
-            ]]
+            ]],
+            sport: ['']
         }, {
             validator: MustMatch('password', 'confirm')
         });
@@ -115,17 +119,38 @@ export class SignupComponent implements OnInit {
                     this.f.role.setValue(data[i].id);
                 }
             }
-            console.log(this.f);
+            this.getSports();
+        }, e => {
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
+            }
+        });
+    }
+
+    getSports() {
+        let request = {};
+        this.auth.getAllSports(request).subscribe((response) => {
+            let data = response.body.item;
+            this.sportList = [];
+            for (let i in data) {
+                this.sportList.push(data[i]);
+                if (i == "0") {
+                    this.f.sport.setValue(data[i].id);
+                }
+            }
             this.isPageLoad = true;
-        }, error => {
-            this.toast.error(error.message, 'Error');
+        }, e => {
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
+            }
         });
     }
 
     signup() {
-        debugger;
-        console.log(this.signupForm);
-        console.log(this.f);
         this.submitted = true;
         if (this.signupForm.invalid) {
             return;
@@ -135,21 +160,28 @@ export class SignupComponent implements OnInit {
                 password: this.f.password.value,
                 username: this.f.email.value,
                 userRole: this.f.role.value,
+                sportId: (this.f.role.value === 4) ? this.f.sport.value : 0,
             };
             this.auth.signup(request).subscribe((response) => {
-                let data = response.body;
-                this.toast.success(data.message);
+                let msg = response.body.message;
+                this.toast.success(msg);
+                let data = response.body.item;
+                let name = (data.lastName) ? (data.firstName + ' ' + data.lastName) : data.firstName;
                 UtilityService.setMultiLocalStorage([
-                    ['name', data.firstName + ' ' + data.lastName],
+                    ['name', name],
                     ['token', data.token],
-                    ['id', data.userId],
+                    ['id', data.id],
                     ['rolename', data.userRoleName],
                     ['role', data.userRoleId],
                     ['user', JSON.stringify(data)]
                 ]);
                 this.router.navigate(['/tournaments']);
-            }, error => {
-                this.toast.error(error.message);
+            }, e => {
+                if (e && e.error && e.error.message && e.error.message[0]) {
+                    this.toast.error(e.error.message[0]);
+                } else {
+                    this.toast.error(e.message, 'Error');
+                }
             });
         }
     }

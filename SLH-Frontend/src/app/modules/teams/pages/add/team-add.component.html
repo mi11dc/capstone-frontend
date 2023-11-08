@@ -7,62 +7,61 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <h4 class="my-0">Create Create</h4>
+                                <h4 class="my-0">Create Team</h4>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <form [formGroup]="teamForm">
-                            <div class="row">
-                                <div class="col-md-3 col-sm-6 form-group">
-                                    <label>Name<span class="star">*</span> :</label>
-                                    <input class="form-control" placeholder="Name" formControlName="name">
-                                    <small *ngIf="submitted && f.name.errors"
-                                           class="text-danger">
-                                        <span *ngIf="f.name.errors.required">Name is required.</span>
-                                    </small>
-                                </div>
-                                <div class="col-md-3 col-sm-6 form-group">
-                                    <label>Country Name<span class="star">*</span> :</label>
-                                    <input class="form-control" placeholder="Country Name" formControlName="country">
-                                    <small *ngIf="submitted && f.country.errors"
-                                           class="text-danger">
-                                        <span *ngIf="f.country.errors.required">Country is required.</span>
-                                    </small>
-                                </div>
-                                <div class="col-md-3 col-sm-6 form-group" *ngIf="userRole===1">
-                                    <label>Owner Name<span class="star">*</span> :</label>
-                                    <ng-select [formControlName]="'owner'" [items]="ownerList" [style]="'width: 100%'"
-                                        bindLabel="name" 
-                                        bindValue="id" >
-                                    </ng-select>
-                                    <!-- <input class="form-control" placeholder="Owner Name" formControlName="owner"> -->
-                                    <small *ngIf="submitted && f.owner.errors"
-                                           class="text-danger">
-                                        <span *ngIf="f.owner.errors.required">Onwer is required.</span>
-                                    </small>
-                                </div>
-                                <div class="col-md-3 col-sm-6 form-group">
-                                    <label>Sport Name<span class="star">*</span> :</label>
-                                    <ng-select [formControlName]="'sport'" [items]="sportList" [style]="'width: 100%'"
-                                        bindLabel="name" 
-                                        bindValue="id" >
-                                    </ng-select>
-                                    <!-- <input class="form-control" placeholder="Owner Name" formControlName="owner"> -->
-                                    <small *ngIf="submitted && f.sport.errors"
-                                           class="text-danger">
-                                        <span *ngIf="f.sport.errors.required">Country is required.</span>
-                                    </small>
-                                </div>
+                <div class="card-body">
+                    <form [formGroup]="teamForm">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6 form-group">
+                                <label>Name<span class="star">*</span> :</label>
+                                <input class="form-control" placeholder="Name" formControlName="name">
+                                <small *ngIf="submitted && f.name.errors"
+                                       class="text-danger">
+                                    <span *ngIf="f.name.errors.required">Name is required.</span>
+                                </small>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-md-3 col-sm-6 form-group">
+                                <label>Country Name<span class="star">*</span> :</label>
+                                <input class="form-control" placeholder="Country Name" formControlName="country">
+                                <small *ngIf="submitted && f.country.errors"
+                                       class="text-danger">
+                                    <span *ngIf="f.country.errors.required">Country is required.</span>
+                                </small>
+                            </div>
+                            <div class="col-md-3 col-sm-6 form-group" *ngIf="currUserRole==='1'">
+                                <label>Owner Name<span class="star">*</span> :</label>
+                                <ng-select [formControlName]="'owner'" [items]="ownerList" [style]="'width: 100%'"
+                                    bindLabel="name" 
+                                    bindValue="id" >
+                                </ng-select>
+                                <!-- <input class="form-control" placeholder="Owner Name" formControlName="owner"> -->
+                                <small *ngIf="submitted && f.owner.errors"
+                                       class="text-danger">
+                                    <span *ngIf="f.owner.errors.required">Onwer is required.</span>
+                                </small>
+                            </div>
+                            <div class="col-md-3 col-sm-6 form-group">
+                                <label>Sport Name<span class="star">*</span> :</label>
+                                <ng-select [formControlName]="'sport'" [items]="sportList" [style]="'width: 100%'"
+                                    bindLabel="name" 
+                                    bindValue="id" >
+                                </ng-select>
+                                <!-- <input class="form-control" placeholder="Owner Name" formControlName="owner"> -->
+                                <small *ngIf="submitted && f.sport.errors"
+                                       class="text-danger">
+                                    <span *ngIf="f.sport.errors.required">Country is required.</span>
+                                </small>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div>
-                    <button class="btn btn-primary float-right mx-3" (click)="onSubmit()">Submit</button>
+                    <button class="btn btn-success float-right mx-3 custom-pointer" (click)="onSubmit()">Submit</button>
+                    <button class="btn btn-primary float-right mx-3 custom-pointer" (click)="onBackButton()">Go to List</button>
                 </div>
 
             </div>

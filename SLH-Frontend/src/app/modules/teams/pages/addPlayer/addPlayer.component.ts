@@ -1,38 +1,53 @@
 import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Dropdowndata } from "app/core/models/global.model";
 import { UtilityService } from "app/core/services/utility.service";
-import { switchMap } from "rxjs";
 import { TeamService } from "../../team.service";
-import { TeamData } from "../../_core/model/model";
 import { ToastrService } from "ngx-toastr";
-import Swal from 'sweetalert2';
+import { switchMap } from "rxjs";
+import { TeamData } from "../../_core/model/model";
 
 @Component({
-    selector: 'team-detail',
-    templateUrl: './team-detail.component.html'
+    selector: 'team-add-player',
+    templateUrl: './addPlayer.component.html'
 })
 
-export class TeamDetailComponent implements OnInit {
-    
-    teamId;
+export class AddPlayerComponent implements OnInit {
+    teamPlayerForm: FormGroup;
     isDataLoaded = false;
-    teamDetails: TeamData;
+    submitted = false;
+
+    playersList: Dropdowndata[];
 
     currUserId = UtilityService.getLocalStorage('id');
     currUserRole = UtilityService.getLocalStorage('role');
 
+    teamId;
+    teamDetails: TeamData;
+    
     constructor(
+        private fb: FormBuilder,
         private router: Router,
-        private route: ActivatedRoute,
         private team: TeamService,
-        private toast: ToastrService
+        private toast: ToastrService,
+        private route: ActivatedRoute,
     ) { }
+
+    get f() {
+        return this.teamPlayerForm.controls;
+    }
     
     ngOnInit(): void {
         this.setDefaultData();
     }
 
     setDefaultData() {
+        this.teamPlayerForm = this.fb.group({
+            teamId: [ null, [ Validators.required ] ],
+            playerId: [ null, [ Validators.required ]]
+        });
+
         this.getTeamDetails();
     }
 
@@ -62,22 +77,31 @@ export class TeamDetailComponent implements OnInit {
     setTeamData(data) {
         this.teamDetails = data;
 
-        this.teamDetails.lstPlayers = [];
+        this.getPlayers(this.teamDetails.sportId);
+    }
 
-        data.lstPlayers.forEach((obj, i) => {
-            this.teamDetails.lstPlayers.push({
-                id: obj.id,
-                fName: obj.fName,
-                lName: obj.lName,
-                userBio: obj.userBio,
-                sportId: obj.sportId,
-                sportName: obj.sportName,
-                dOB: obj.dOB,
-                country: obj.country,
-                joinedHistory: obj.joinedHistory
-            });
+    getPlayers(sportId) {
+        let request = {
+            sportId
+        };
+        this.team.getPlayers(request).subscribe((response) => {
+            this.setPlayers(response.body.item);
+        }, e => {
+            if (e.status === 401) {
+                this.toast.error(e.message, 'Error');
+                this.router.navigate(['/auth/login']);
+            }
+            if (e && e.error && e.error.message && e.error.message[0]) {
+                this.toast.error(e.error.message[0]);
+            } else {
+                this.toast.error(e.message, 'Error');
+            }
         });
+        
+    }
 
+    setPlayers(data) {
+        console.log(data);
         this.isDataLoaded = true;
     }
 
@@ -93,37 +117,5 @@ export class TeamDetailComponent implements OnInit {
             Id: this.teamId
         });
         return obj;
-    }
-
-    onAddPlayer() {
-        this.router.navigate([`/teams/${this.teamId}/addPlayer`]);
-    }
-
-    onReleasePlayer(teamPlayerId) {
-        Swal.fire('Warning', 'Are you sure want to release this player?')
-            .then(result => {
-                if (result.value) {
-                    const request = {
-                        id: teamPlayerId
-                    };
-                    this.teamPlayerRelease(request);
-                }
-            });
-    }
-
-    teamPlayerRelease(request) {
-        this.team.teamPlayerRelease(request).subscribe(res => {
-            this.getTeamDetails();
-        }, e => {
-            if (e.status === 401) {
-                this.toast.error(e.message, 'Error');
-                this.router.navigate(['/auth/login']);
-            }
-            if (e && e.error && e.error.message && e.error.message[0]) {
-                this.toast.error(e.error.message[0]);
-            } else {
-                this.toast.error(e.message, 'Error');
-            }
-        });
     }
 }

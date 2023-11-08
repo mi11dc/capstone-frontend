@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-2">
-                                <a class="btn btn-primary btn-outline-secondary" [routerLink]="['/venues/add']" title="Add Venue">
+                                <a class="btn btn-primary btn-outline-secondary margin-top-0" [routerLink]="['/venues/add']" title="Add Venue">
                                     <i class="nc-icon nc-simple-add"></i>
                                 </a>
                             </div>
@@ -64,8 +64,8 @@
                         <div class="table-responsive table ">
                             <table class="table table-striped table-bordered">
                                 <thead class=" text-primary">
-                                    <th>
-                                        Id
+                                    <th style="width: 15%;">
+                                        #
                                     </th>
                                     <th>
                                         Name
@@ -76,14 +76,14 @@
                                     <th>
                                         Country
                                     </th>
-                                    <th>
+                                    <th style="width: 15%;">
                                         Actions
                                     </th>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let venue of lstVenues">
+                                    <tr *ngFor="let venue of lstVenues; let i = index;">
                                         <td>
-                                            {{ venue.id }}
+                                            {{ i + 1 }}
                                         </td>
                                         <td>
                                             {{ venue.name }}
@@ -95,11 +95,14 @@
                                             {{ venue.country }}
                                         </td>
                                         <td>
-                                            <button class="custom-pointer btn btn-sm btn-error mx-1 custom-pointer" 
+                                            <button class="custom-pointer btn btn-sm btn-danger mx-1 custom-pointer" title="Delete Venue" 
                                                 (click)="deleteVenue(venue.id)">
                                                 <i class="nc-icon nc-simple-remove"></i>
                                             </button>
                                         </td>
+                                    </tr>
+                                    <tr class="text-center" *ngIf="lstVenues.length === 0">
+                                        <td colspan="5">No venue available</td>
                                     </tr>
                                 </tbody>
                             </table>
